@@ -8,7 +8,7 @@ On Sopek OWRT, ```/dev/fd``` is not linked properly and this is used as a temp f
 To solve this, run ```ln -sf /proc/self/fd /dev/fd``` then initialize blocklist downloads.  
 To have this persist across reboots, run ```nano /etc/rc.local```, then add ```ln -sf /proc/self/fd /dev/fd``` above ```exit 0```.
 
-<h1>Migrating from Cloudflare Tunnel to Tailscale</h1>  
+<h1>Migrating from Cloudflare Tunnel to Tailscale:</h1>  
 
 Cloudflare Tunnel as of October 2025 is very slow (at least for me), sometimes taking up to 1 minute to load a locally hosted webpage.  
 Tailscale offers better security and speed. The downside is that only devices within your tailnet can access your webpages.  
