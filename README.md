@@ -102,10 +102,10 @@ Step by step instructions:
    rm -f $TMPFILE
    ```
    Replace yourname@example.com with the receiver email. This will also delete any SMS received after an email notification is sent.  
-   Additional notes: ```cat $MODEM_PORT > $TMPFILE &``` is needed because AT+CMGL doesn't include an EOF at the end of the response.
-   This will cause the modem port buffer to build up over time and eventually become full.
-   When that happens AT+CMGL will return nothing and the script will stop working.
-   ```kill -0 $PID 2>/dev/null && kill $PID 2>/dev/null``` is needed for the same reason. As the response from AT+CMGL has no EOF at
+   Additional notes: ```cat $MODEM_PORT > $TMPFILE &``` is needed because AT+CMGL doesn't include an EOF at the end of the response.  
+   This will cause the modem port buffer to build up over time and eventually become full.  
+   When that happens AT+CMGL will return nothing and the script will stop working.  
+   ```kill -0 $PID 2>/dev/null && kill $PID 2>/dev/null``` is needed for the same reason. As the response from AT+CMGL has no EOF at  
    the end of the response, the cat PID will persist until it is killed. Again, cat process has a PID limit, the script will stop.  
 10. Run ```chmod +x /usr/bin/sms-notify.sh``` to make the script executable.  
 11. Send another SMS to the openwrt sim card and run ```/usr/bin/sms-notify.sh``` to test if the script works.  
