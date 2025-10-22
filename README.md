@@ -102,14 +102,19 @@ Step by step instructions:
    rm -f $TMPFILE
    ```
    Replace yourname@example.com with the receiver email. This will also delete any SMS received after an email notification is sent.  
-9. Run ```chmod +x /usr/bin/sms-notify.sh``` to make the script executable.  
-10. Send another SMS to the openwrt sim card and run ```/usr/bin/sms-notify.sh``` to test if the script works.  
+   Additional notes: ```cat $MODEM_PORT > $TMPFILE &``` is needed because AT+CMGL doesn't include an EOF at the end of the response.
+   This will cause the modem port buffer to build up over time and eventually become full.
+   When that happens AT+CMGL will return nothing and the script will stop working.
+   ```kill -0 $PID 2>/dev/null && kill $PID 2>/dev/null``` is needed for the same reason. As the response from AT+CMGL has no EOF at
+   the end of the response, the cat PID will persist until it is killed. Again, cat process has a PID limit, the script will stop.  
+10. Run ```chmod +x /usr/bin/sms-notify.sh``` to make the script executable.  
+11. Send another SMS to the openwrt sim card and run ```/usr/bin/sms-notify.sh``` to test if the script works.  
     Check your email for the SMS notification and run ```logread | grep sms-notify``` and it should return  
     ```sms-notify: Sent email for SMS from +60123456789```  
-11. Next, go to System > Scheduled Tasks and add in ```*/1 * * * * /usr/bin/sms-notify.sh```  
+12. Next, go to System > Scheduled Tasks and add in ```*/1 * * * * /usr/bin/sms-notify.sh```  
     This sets up a cron job to run the script every minute.  
-12. Reboot openwrt and send another SMS to the openwrt sim card, you should receive an SMS notification in your email within a minute.  
-13. If you check ```logread | grep sms-notify``` in the terminal, it will return  
+13. Reboot openwrt and send another SMS to the openwrt sim card, you should receive an SMS notification in your email within a minute.  
+14. If you check ```logread | grep sms-notify``` in the terminal, it will return  
     ```cron.err crond[15681]: USER root pid 16473 cmd /usr/bin/sms-notify.sh``` every minute.
     This is normal whenever there is no new SMS.
 
